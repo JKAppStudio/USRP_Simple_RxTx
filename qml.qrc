@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>GUI/main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>GUI/Controls/NumericControl.qml</file>
+        <file>GUI/Controls/USRPControlPanel.qml</file>
+        <file>GUI/Controls/UHDDevicesList.qml</file>
+    </qresource>
+</RCC>
