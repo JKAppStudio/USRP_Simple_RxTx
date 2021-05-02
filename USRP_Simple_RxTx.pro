@@ -3,7 +3,12 @@ QT += quick \
     gui     \
     quickcontrols2
 
-CONFIG += c++17
+CONFIG += c++17\
+
+macx: {
+CONFIG += sdk_no_version_check \
+          lib_no_version_check
+}
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -20,9 +25,15 @@ HEADERS += \
 
 RESOURCES += qml.qrc
 
+
 INCLUDEPATH += \
             Include \
             /usr/local/include
+macx: {
+INCLUDEPATH += \
+            /opt/local/include
+}
+
 
 DEPENDPATH += \
             /usr/local/include \
@@ -39,8 +50,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES +=
-
-
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/release/ -luhd
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../usr/local/lib/debug/ -luhd
