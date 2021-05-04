@@ -13,6 +13,7 @@ ApplicationWindow {
     minimumWidth: settingsPanel.requiredWidth + 50
     minimumHeight: settingsPanel.requiredHeight + 50
 
+
     Drawer{
         id: settings
         height: window.height
@@ -20,8 +21,8 @@ ApplicationWindow {
         Component.onCompleted: open()
 
         USRPControlPanel{
-            textColor: "black"
             id: settingsPanel
+            textColor: window.color > "#555555" ? "black" : "lightgray"
             devices: __usrpList
 
             onDeviceIndexChanged: __USRPSession.deviceIndex = deviceIndex
@@ -47,10 +48,56 @@ ApplicationWindow {
                 }
             }
 
+            onRxChannelChanged: {
+                if(__USRPSession.rxChannel !== rxChannel)
+                    __USRPSession.rxChannel = rxChannel
+                rxChannel = __USRPSession.rxChannel
+            }
         }
     }
 
-    ChartView{
+    Pane{
         anchors.fill: parent
+
+        GridLayout{
+
+            anchors.fill: parent
+            columns:2
+
+            ToggleButton{
+                id: startRx
+                onText: "Stop RX"
+                offText: "Start RX"
+                isActive: __USRPSession.rxStreaming
+
+                Layout.fillHeight: true
+                Layout.column: 1
+                Layout.row: 0
+
+                onPressed: {
+                    if(!isActive) __USRPSession.initiateRx()
+                }
+            }
+
+            ToggleButton{
+                id: startTx
+                onText: "Stop TX"
+                offText: "Start TX"
+
+                Layout.fillHeight: true
+                Layout.column: 1
+                Layout.row: 1
+            }
+
+            ChartView{
+                Layout.rowSpan: 2
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.column: 0
+                Layout.row: 0
+            }
+
+
+        }
     }
 }

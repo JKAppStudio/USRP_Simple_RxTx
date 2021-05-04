@@ -20,7 +20,7 @@ Pane{
     property alias rxFrequency: rxFrequency.value
     property alias rxGain: rxGain.value
     property alias rxRate: rxRate.value
-
+    property alias rxChannel: rxChannelSelector.index
 
     GridLayout{
         id: root
@@ -39,6 +39,7 @@ Pane{
         UHDDevicesList{
             id: devicesList
             Layout.columnSpan: root.columns
+            color: textColor
         }
 
         Text{
@@ -51,6 +52,16 @@ Pane{
         MenuSeparator{
             Layout.columnSpan: root.columns - 1
             Layout.alignment: Qt.AlignLeading
+        }
+
+        USRPChannelSelector{
+            id: rxChannelSelector
+            textSize: textFontSize
+            label: "Channel"
+            color: textColor
+            Layout.columnSpan: 3
+            Layout.fillWidth: true
+
         }
 
         NumericControl{

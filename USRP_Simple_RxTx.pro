@@ -3,7 +3,7 @@ QT += quick \
     gui     \
     quickcontrols2
 
-CONFIG += c++17\
+CONFIG += c++17
 
 macx: {
 CONFIG += sdk_no_version_check \

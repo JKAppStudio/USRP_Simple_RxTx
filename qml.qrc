@@ -5,5 +5,7 @@
         <file>GUI/Controls/NumericControl.qml</file>
         <file>GUI/Controls/USRPControlPanel.qml</file>
         <file>GUI/Controls/UHDDevicesList.qml</file>
+        <file>GUI/Controls/USRPChannelSelector.qml</file>
+        <file>GUI/Controls/ToggleButton.qml</file>
     </qresource>
 </RCC>
