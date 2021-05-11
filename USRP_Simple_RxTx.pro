@@ -1,7 +1,8 @@
 QT += quick \
     widgets \
     gui     \
-    quickcontrols2
+    quickcontrols2 \
+    charts
 
 CONFIG += c++17
 
@@ -17,11 +18,13 @@ CONFIG += sdk_no_version_check \
 SOURCES += \
     Sources/UHDGUIWrapper.cpp \
     Sources/UhdDeviceList.cpp \
+    Sources/WaveformDataProvider.cpp \
     main.cpp
 
 HEADERS += \
     Include/UHDGUIWrapper.h \
-    Include/UhdDevicesList.h
+    Include/UhdDevicesList.h \
+    Include/WaveformDataProvider.h
 
 RESOURCES += qml.qrc
 

@@ -4,6 +4,7 @@
 #include <uhd/usrp/multi_usrp.hpp>
 #include <uhd/utils/thread.hpp>
 #include <vector>
+#include <deque>
 #include <chrono>
 #include <complex>
 #include <thread>
@@ -14,6 +15,12 @@ enum ChannelSelector{
     RF1,
     BOTH
 };
+
+using Complex = std::complex<float>;
+using ChannelData = std::vector<Complex>;
+using RxBuffer = std::vector<ChannelData>;
+using RxBuf_ptrs = std::vector<Complex*>;
+using RxDeque = std::deque<RxBuffer*>;
 
 class UHDGUIWrapper : public QObject
 {
@@ -48,6 +55,8 @@ public:
     void setRxStreaming(bool stream);
     bool rxStreaming();
 
+    RxDeque* rxDeque();
+
 signals:
     void deviceIndexChanged(int index);
     void rxFrequencyChanged(double frequency);
@@ -60,18 +69,21 @@ public slots:
     void initiateRx();
 
 private:
+    static std::vector<std::thread> _rx_threads_ptrs;
+
     UhdDevicesList _devices;
-    uhd::usrp::multi_usrp::sptr _usrp;
     int _deviceIndex;
+
+    uhd::usrp::multi_usrp::sptr _usrp;
+
     uhd::stream_args_t _rx_stream_args;
     uhd::rx_streamer::sptr _rx_streamer;
-    std::vector<std::vector<std::complex<float>>> _rx_buffs;
-    std::vector<std::complex<float>*> _rx_buff_ptrs;
-    std::vector<std::thread> _rx_threads_ptr;
+    RxBuffer _rx_buffs;
+    RxBuf_ptrs _rx_buff_ptrs;
+    RxDeque _rx_deque;
+
     bool _rx_stream_in_proccess;
-
-    static bool rxStreaming(const UHDGUIWrapper& session, const uhd::stream_cmd_t& cmd);
-
 };
+
 
 #endif // UHDGUIWRAPPER_H

@@ -3,6 +3,8 @@
 #include <QQmlContext>
 #include <QQuickStyle>
 #include "UHDGUIWrapper.h"
+#include "WaveformDataProvider.h"
+
 
 int main(int argc, char *argv[]){
 
@@ -12,12 +14,13 @@ int main(int argc, char *argv[]){
     QQmlApplicationEngine engine;
 
     UHDGUIWrapper usrp;
+    WaveformDataProvider provider(usrp.rxDeque());
 
     QQmlContext *context = engine.rootContext();
 
     context->setContextProperty("__USRPSession", &usrp);
     context->setContextProperty("__usrpList", usrp.devicesList());
-
+    context->setContextProperty("__rxSignalProvider", &provider);
 
     const QUrl url(QString("qrc:/GUI/main.qml"));
 
@@ -27,6 +30,7 @@ int main(int argc, char *argv[]){
     }, Qt::QueuedConnection);
 
     engine.load(url);
+
 
     return app.exec();
 }

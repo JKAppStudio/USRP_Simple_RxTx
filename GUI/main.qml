@@ -68,7 +68,9 @@ ApplicationWindow {
                 id: startRx
                 onText: "Stop RX"
                 offText: "Start RX"
-                isActive: __USRPSession.rxStreaming
+
+                isActive:
+                    (__USRPSession != null) ? __USRPSession.rxStreaming : false // protection in case __USRPSession destroyed
 
                 Layout.fillHeight: true
                 Layout.column: 1
@@ -90,11 +92,38 @@ ApplicationWindow {
             }
 
             ChartView{
+                id: rxSignalChart
                 Layout.rowSpan: 2
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.column: 0
                 Layout.row: 0
+
+//                theme: ChartView.ChartThemeBrownSand
+
+                animationOptions: ChartView.NoAnimation
+                antialiasing: true
+                legend.alignment: Qt.AlignRight
+
+                LineSeries{
+                    id: rxSignal0_I
+                    name: "rx0 I"
+                    useOpenGL: true
+
+                }
+
+                LineSeries{
+                    id: rxSignal0_Q
+                    name: "rx0 Q"
+                    useOpenGL: true
+
+                }
+
+                Component.onCompleted: {
+                    for(var i=0; i < rxSignalChart.count; i++)
+                   __rxSignalProvider.addSeries(rxSignalChart.series(i))
+                }
+
             }
 
 
